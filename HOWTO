@@ -1,0 +1,347 @@
+Daevel Basic TCP Unix Daemon 
+----------------------------
+
+(c) Copyright Dan Shearer
+[open license]
+
+Summary
+-------
+
+If you know all about writing Unix daemons, don't bother reading any 
+further. The intention is to practically illustrate the elegant way
+that Unix system calls lend themselves to daemon code.
+
+This document describes the features of the Basic Template TCP Unix
+Daemon, lists the differences with the Advanced TCP Daemon, and gives
+instructions for how to use the template in your own code on Unix/Linux
+or Cygwin.
+
+Language
+--------
+
+This package is written in C. The classic Unix daemons are all written
+in C, which means that any study of good daemon practice must review
+these packages. This template represents such a study to some
+degree. Anyone programming in C++, Ruby or whatever should still find
+useful tips in how to use Unix system calls to build a safe and useful
+daemon infrastructure. If you are using C then you probably can just
+start modifying this template.
+
+Introduction
+------------
+
+This program encapsulates in a small number of source files all the
+structure for a safe, well-designed Unix daemon that can communicate
+using the TCP protocol and which is very portable across platforms.
+
+Example daemons are usually impractical for real-world use, lacking in
+error checking, logging or other essential features. By building your
+program on this sample code you can be reasonably sure that you have a
+good foundation. And by watching the bug fixes (hopefully not too
+many!) to this sample daemon you will know that the following
+functionality is well-implemented and ready for you to extend:
+
+   * backgrounding daemon
+   * network connection monitoring
+   * logging subsystem
+   * debugging facilities: multilevel logging and panic routines
+   * simple configuration file
+   * generic commandline switches
+   * default daemon behaviour (background, logfile, lockfile, log level ...)
+   * error recovery (recover if possible, log, orderly shutdown)
+   * conservation of resources (sockets, filehandles, memory)
+   * simple administration interface (lockfile, shutdown command, query)
+
+This is a basic daemon framework, suitable for learning about writing
+a Unix daemon or implementing a simple daemon. It is always good to
+use simple solutions for simple problems, and the Basic Daemon should
+have many applications. A similar structure will work for a UDP
+daemon. If there are more features provided than you need, then just
+use a few modules.
+
+There are a lot things that the Basic Daemon does not do, and which are
+covered by the Advanced Daemon:
+
+   * autoconf for even more portability
+   * more advanced commandline handling using GNU getopt
+   * advanced configuration files using the PCRE library for expressions
+   * much better lockfile management using liblockfile
+   * daemon administration by web page
+   * optional IPv6 support
+   * multi-lingual capabilities
+   * SSL for protecting connections using libssl
+
+The Advanced Daemon will almost certainly have some features you don't want!
+
+How to Use the Daevel Basic Daemon
+----------------------------------
+
+1. Download and unpack into a new directory. You should have a number of
+   .c and .h files, and the documentation which consists of README, HOWTO (this
+   file), FAQ and TODO.
+
+1.5 If you are running on Cygwin, change the lines near the top of global.h
+   following the instructions given in the comments.
+
+2. Check that the basic daemon compiles (and runs at least a little
+   bit!) on your Unix platform. Something like:
+
+        $ make
+        $ ./daevel -h
+          usage:
+                 -h        help message
+       		 -F        foreground-only (defaults to background)
+       		 -d n      set debugging log level n (maximum 9, default 0)
+       		 -p n      listen on port n (1-64k, default 29):
+       		 -l fname  set logfile to fname (default "logfile")
+       		 -c fname  set configuration file to fname (no default, ie "")
+       		 -w        write reverse dnslookups for incoming clients to 
+                           logfile
+       		 -k        dump core on panic rather than exit with error
+       		 -t        terminate running copy of daemon
+
+
+   should work exactly as shown if you have the gcc compiler on your system.
+   If you do not have gcc, try changing the CC macro in the Makefile to
+   something like 'cc'.
+
+   If you still can't get make to work the following shell script can be a
+   useful shortcut:
+
+       #/bin/sh
+       cc -g -Wall -o t main.c log.c util.c \
+              lockfile.c socket.c confdata.c > T 2>&1
+       cat T
+
+   (This is what makefiles were designed for)
+
+3. Test the sample implementation (an echo server) by starting it with
+logging set to the foreground, like this:
+
+$ ./daemon -F
+	2002-05-20 05:22:29 pid=2220 ./daemon: checked config. Initial process \
+                                     starting
+	2002-05-20 05:22:29 pid=2220 coin listening on port 3000
+
+Now start another terminal window and use telnet as a client:
+
+	bash-2.05a$ telnet localhost 3000
+	Trying 127.0.0.1...
+	Connected to coin.
+	Escape character is '^]'.
+	Hello 127.0.0.1
+	Test                              <--- You type this in
+	Test                              <--- This is echoed back
+	1                                 <--- This terminates the session
+	Connection closed by foreign host.
+
+When you connected you should have seen this line come up in the 
+first terminal window:
+
+	2002-05-20 05:22:38 pid=2220 Connection attempt from 127.0.0.1
+
+And when you typed '1' you should have seen this:
+
+	2002-05-20 05:22:43 pid=2220 child pid 2222 died
+
+Finally, from the second window type:
+
+	$ ./daemon -t
+
+and in the first you will see one final message before the 
+commandprompt appears again:
+
+	2002-05-20 05:25:33 pid=2220 Master process received shutdown signal
+ 
+4. The log file. The log file is just what was displayed on the screen
+previously, only stored in a file. If you repeat the previous test only
+omitting the '-F' commandline parameter, the initial daemon will silently
+return to the command prompt and a file called 'logfile' will be created
+in the current directory (make sure you are in a directory for which you
+have write permissions!). The logfile for the previous test looks like:
+
+2002-05-20 05:09:05 pid=2109 ./daemon: checked config. Initial process starting
+2002-05-20 05:09:05 pid=2109 coin listening on port 3000
+2002-05-20 05:09:05 pid=2109 Initial process terminating. daemon pid=2110
+2002-05-20 05:09:10 pid=2110 Connection attempt from 127.0.0.1
+2002-05-20 05:09:24 pid=2110 child pid 2112 died
+
+Notice that the process started from the commandline was 2109, which then
+backgrounded to become a daemon with pid 2110, and the child invoked for
+the incoming connection was pid 2112.
+
+Doing the same test with maximum debugging level (./test -d9) gives much
+more detail about what is going on, probably more than you ever wanted
+to see. Loglevel 2 gives information inbetween the two.
+
+4. Once you understand how this works, and you have read the rest of
+this file which introduces the other features of the template, you can
+start modifying the daemon template. Create two files, myhandler.c and
+myhandler.h and make sure that the handler function exported via
+myhandler.h is what is called by child_function in
+main.c. child_function is merely a placeholder, demonstrating by means
+of an echo server that everything is working.
+
+In your client routine, you need to have the following:
+
+      Greeting handshake
+      Processing loop
+      (optional) Termination condition
+
+The termination condition is optional because some daemons never exit. These
+are often called longrunning daemons.
+
+6. Change the README and create your own FAQ and HOWTO. Please
+acknowledge that you are using this package, and give the version you
+used. If you fix any bugs, submit them to [details].
+
+Structure
+---------
+
+main() processes the commandline and config file, does a lot of
+initial checks, becomes a daemon (unless specifically asked not to)
+and then goes into an infinite loop. This loop waits for incoming
+connections, fork()ing each time provided security and resource
+considerations are met. 
+
+Each forked process does yet more checks (including on the incoming IP
+address, which can't be done in main() because it may block), and then
+executes the main business of the daemon.
+
+Commandline Parameters
+----------------------
+
+There are a number of commonly-used parameters already defined. The
+template daemon does not require any parameters to be used, because 
+there are defaults in the source.
+
+The parameters are:
+
+  -h    usage message
+
+  -F	foreground-only (don't fork and become a background daemon)
+        Also set by -o.
+
+	default: not present (ie fork by default)
+
+  -dn	debug level n. Ignored (with warning) if -o set as well.
+
+	default: n=0
+
+  -lfname
+	log to file fname, which can include a full path specification.
+        Ignored (with warning) if -o set as well.
+
+	default: logfile, in the current directory
+
+  -cfname
+	use configuration file fname, which can include a full path spec.
+
+	default: no config file
+
+  -mn   set maximum number of child processes
+
+        default: ABSOLUTE_MAX_CHILDREN (possibly 200, but check global.h) 
+
+  -pn	port number to listen on
+
+	default: none. must be specified in one of the configfile, commandline
+        or in the source code. Well, the template code does have 3000, but
+        that's just for the demo echo server.
+
+  -w	check DNS name of incoming client with a PTR lookup. This can be
+	expensive, depending on your situation
+
+	default: present (ie do lookups by default)
+
+  -k    dump core on PANIC() rather than just exit with error
+
+  -o    run through the configuration logic, then exit before the daemon
+        is run. This automatically turns on -F and d9.
+
+Configuration File
+------------------
+
+The template daemon does not require any configuration file to be present,
+because there are defaults set in the source (just like it doesn't require
+any commandline parameters.) An example configuration file that tests the
+configuration code via good and bad parameters is supplied with the 
+template, called badfile.conf. You can see how it works by running daevel
+at debug level 9 with this config file using the -c parameter.
+
+A configuration file consists of:
+
+   o  blank lines, which are ignored
+
+   o  comments starting with "#", also ignored
+
+   o  parameters with values, in the form "param=expression", eg:
+
+          dnslookups = true
+
+      expressions may be:
+
+          a) boolean. A complete list of values is:
+                   TRUE, YES
+                   FALSE, NO
+
+          b) 16-bit integer. Anything larger than 16 bits may not be
+             portable
+
+          c) string literal. There is no concept of quoted strings.
+             The string is the first contiguous string, optionally
+             whitespace-delimited, occuring to the right of the '='.
+             Strings may contain '=' and '#'.
+
+    o whitespace is regarded as delimiting expressions, and otherwise
+      ignored
+
+    o case is not significant, except within string literals. Case is
+      preserved within string literals.
+
+There is no macro facility, or ability for expressions to refer to other
+parameters.
+
+Debugging tutorial
+------------------
+
+**NOT DONE
+
+Log file
+
+Logging to screen (-F)
+
+Log levels
+
+l/strace -f
+
+gdb
+
+gdb/attach with a sleep for children
+
+
+List of Pointers and Comments about TCP Protocols
+-------------------------------------------------
+
+**NOT DONE
+
+Use existing protocols where possible and appropriate
+
+Text protocols simpler to implement and debug, and trivially protected
+with strong encryption as an add-on (not necessarily even part of the
+code, eg ssh tunnelling.)
+
+Binary protocols not too difficult though, for example for tranferring
+files.
+
+Sniffing network traffic (links)
+
+Teaching tcpdump about new protocols (links)
+
+Teaching Ethereal about new protocols (links)
+
+
+
+
+
+

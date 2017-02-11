@@ -1,0 +1,10 @@
+Coding Style for Daevel
+-----------------------
+
+I like to clean up code to be consistent before committing it. I use
+Artistic Style from http://astyle.sourceforge.net with these options:
+
+  --style=ansi
+  --indet=spaces=2
+  --pad=oper
+

@@ -1,0 +1,54 @@
+Thanks to all the following contributors!
+
+Dan
+
+-----
+
+Thanks to the authors of Exim, Samba, Postfix, Apache, sshd, fetchmail
+and numerous other well-known packages for making your code available
+for scrutiny for creating completely different packages such as this
+one.
+
+Thanks to Tellurian Pty Ltd for hosting the development of early
+versions of this code and allowing me retain copyright, permitting me
+to publish it in this form. Victor Wodecki and John gave valuable
+feedback.
+
+Thanks to Martin Poole and Tim Potter for initial review and many
+others since.
+
+--
+
+Andrew Buckeridge reported a 32-bit PPC compile bug in nothing flat after 
+the initial lighting talk. Ten points for speed :-)
+
+--
+
+Sean Burford sent me these three nicely documented patches:
+
+GLOBAL.patch
+Moves GLOBAL_LINE and GLOBAL_FILE definition out of daevel.c into
+log.c, as this is where they are used.  This removed the dependency of
+log.c on daemon.c.
+
+closeall.patch
+Removes the retainfd argument from close_all.  retainfd was always
+tortu_sock, the listening socket from daemon.c, and whereever
+close_all is called tortu_sock can either be safely closed or is not
+open.  There was one spot where tortu_sock had to be retained, and
+this was resolved by moving init_socket to a point after become_daemon
+as documented in the patch.  Also, this patch makes tortu_sock local
+to daemon.c since the other files don't really care what the listening
+socket is.
+
+ismaster.patch
+Removes the global master_process boolean that is really only needed
+in daemon.c.  become_daemon now returns -1 for error, 0 for child or 1
+for master process (so it doesn't need access to a global
+master_process flag anymore).  I modified the log output function to
+always output the parent process ID, since to me there is little value
+in suppressing the parent PID when we are the master process and this
+would require a master_process global variable.
+
+--
+

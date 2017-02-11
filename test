@@ -1,0 +1,4 @@
+2027-10-10 14:58:16 pid=15606 ./daemon: checked config. Initial process starting
+2027-10-10 14:58:16 pid=15606 hihan listening on port 3000
+2027-10-10 14:58:16 pid=15606 Initial process terminating. daemon pid=15607
+2027-10-10 14:58:29 pid=15607 Master process received shutdown signal

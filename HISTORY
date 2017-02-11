@@ -1,0 +1,16 @@
+--
+
+Version 1.0, 27 May 2008
+
+This framework was first written in 2003, then presented in a lightening talk
+at linux.conf.au 2004 in Adelaide. It went up on shearer.org in 2005, and
+finally in 2008 it went up on code.launchpad.net.
+
+In the meantime various people started using it and a few sent in patches. 
+Before uploading to launchpad, the following changes were made:
+
+   * moved from GPLv2 to GPLv3, and include COPYING
+   * applied various patches (see ACKNOWLEDGEMENTS)
+   * cleaned up with astyle (see CODINGSTYLE)
+
+Dan

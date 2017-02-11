@@ -1,0 +1,35 @@
+2017-02-09 15:44:34 pid=1712 (1436) ./daemon: checked config. Initial process starting
+2017-02-09 15:44:34 pid=1712 (1436) Initial process terminating. daemon started, pid=1713
+2017-02-09 15:44:34 pid=1713 (1712) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 15:44:34 pid=1713 (1) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 15:45:05 pid=1725 (1436) ./daemon: checked config. Initial process starting
+2017-02-09 15:45:05 pid=1725 (1436) Initial process terminating. daemon started, pid=1726
+2017-02-09 15:45:05 pid=1726 (1725) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 15:45:05 pid=1726 (1) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 15:54:04 pid=1897 (1894) ./daemon: checked config. Initial process starting
+2017-02-09 15:54:04 pid=1897 (1894) Initial process terminating. daemon started, pid=1898
+2017-02-09 15:54:04 pid=1898 (1897) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 15:54:04 pid=1898 (1897) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 15:57:06 pid=1929 (1926) ./daemon: checked config. Initial process starting
+2017-02-09 15:57:06 pid=1929 (1926) Initial process terminating. daemon started, pid=1930
+2017-02-09 15:57:06 pid=1930 (1929) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 15:57:06 pid=1930 (1929) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 15:58:24 pid=1940 (1436) ./daemon: checked config. Initial process starting
+2017-02-09 15:58:24 pid=1940 (1436) Initial process terminating. daemon started, pid=1941
+2017-02-09 15:58:24 pid=1941 (1940) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 15:58:24 pid=1941 (1) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 15:58:28 pid=1945 (1942) ./daemon: checked config. Initial process starting
+2017-02-09 15:58:28 pid=1945 (1942) Initial process terminating. daemon started, pid=1946
+2017-02-09 15:58:28 pid=1946 (1945) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 15:58:28 pid=1946 (1945) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 17:22:00 pid=14085 (2507) ./daemon: checked config. Initial process starting
+2017-02-09 17:22:00 pid=14085 (2507) Initial process terminating. daemon started, pid=14086
+2017-02-09 17:22:00 pid=14086 (14085) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 17:22:00 pid=14086 (1) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 17:22:41 pid=14098 (2507) ./daemon: checked config. Initial process starting
+2017-02-09 17:22:41 pid=14098 (2507) Initial process terminating. daemon started, pid=14099
+2017-02-09 17:22:41 pid=14099 (14098) motorleague1.mylabserver.com listening on port 3000
+2017-02-09 17:22:41 pid=14099 (1) PANIC in line 73 of lockfile.c: Cannot secure lock on /tmp/daevel.pid
+2017-02-09 17:23:58 pid=14118 (2507) ./daemon: checked config. Initial process starting
+2017-02-09 17:23:58 pid=14118 (2507) Initial process terminating. daemon started, pid=14119
+2017-02-09 17:23:58 pid=14119 (14118) motorleague1.mylabserver.com listening on port 3000

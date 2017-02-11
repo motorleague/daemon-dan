@@ -1,0 +1,37 @@
+FAQ for Daevel
+--------------
+
+0. What's the point?
+
+I wanted to write a daemon for a buildfarm project, and in doing so
+avoid the most common performance, security and other traps. There is
+so much code around that is known to be solid, so I went looking for
+an encapsulation of the principles as a starting point. To my
+surprise, there was no such thing. This is meant to be a small, simple
+and understandable start to writing your own network daemon. In the
+process I looked at a lot of code, but rather than write a long list
+of findings, I wrote my own code. So for example, rather than complain
+about what appears to be unsafe code in fetchmail's lockfile routines,
+I wrote my own with snippets of what I learnt from Samba, ssh, Apache
+and others. Similarly for TCP socket error handling, where different
+programming teams have learnt about different errors across platforms
+and a summary of the results are used here.
+
+1. Will it work on my OS?
+
+So far Daevel has been tried on Linux, FreeBSD and other Unix operating
+systems. It also compiles on Windows systems running the Cygwin environment
+(www.cygwin.org). It will require considerable effort (which is quite 
+possible, and planned) to make it compile on native Windows compilers 
+without any Unix emulation libraries required.
+
+2. Do I have to know how to program?
+
+Well no, but you have to at least be willing to learn :-) This is of no
+use to someone who wants a ready-made package to do something-or-other.
+It is for people who are not very keen on reinventing the wheel yet again
+and again while writing a Unix-style daemon. 
+
+
+
+

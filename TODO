@@ -1,0 +1,52 @@
+TODO list for Daevel daemon template
+------------------------------------
+
+- Version info in prog and docs
+
+- make lockfile a configurable item
+
+- improve portability
+
+- static check code
+
+- consider making the configuration data more table-driven. For example,
+  store the type of parameters and then use it in the processing.
+
+- better expression parsing in config data, starting with quoted strings
+
+- allow multiple ports to be bound and listened on
+
+- in socket.c, create new gethostbyname that makes allowance for those
+  stupid systems which are fussy about the case of the input string, 
+  and which sometimes return mixed-case answers (which hopefully won't
+  matter.) Eg some versions of HP-UX
+
+- sample client program that connects to the server, maybe. maybe not.
+
+- test suite. So far all we have is the config data tester, badfile.conf.
+  (So far not that much of the code lends itself to test rigs, in fact)
+
+- when -t param used on cygwin, process isn't killed 
+
+- be more sensible/careful inside signal handlers
+
+- setup alarm when accepting data to avoid resource depletion through
+  accident or malice
+
+- search for "UNFEATURE" throughout and fix (many of them are mentioned 
+  in this TODO file)
+
+- better distinguish the 3 outputs: log, debug and client. At the
+  moment it is somewhat confused.
+
+- ipv6. Not much code to add, but some thinking required. An example
+  of encapsulating practices documented in Exim, Postfix etc.
+
+- better security checks on incoming connections
+
+- socket options (easy. merge the options offered by Samba/Apache.)
+
+- rename init_socket listen_socket in util.*
+
+- remove parameter from init_socket fn - no need to pass structure in
+  daemon.c

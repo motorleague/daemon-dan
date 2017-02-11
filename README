@@ -1,0 +1,50 @@
+Introducing Daevel....
+----------------------
+
+Daevel is a template daemon written in C from which new daemons can be
+simply derived. It was inspired by what I couldn't find in Richard
+W. Stevens' UNIX Network Programming, a foundation used by thousands
+of programmers in many languages including C. Stevens writes about
+principles and doesn't present complete solutions, whereas Daevel
+tries to cover the important points for a production system. Daevel is
+currently licensed under the GPL version 3.
+
+Written in C ??
+---------------
+
+But C is a terrible language! All the best bugs come in C! Other
+languages can be faster and more portable! Are you mad??[1]
+
+The classic Unix daemons -- the ones found on many corporate networks
+and of which a majority of the Internet is comprised -- are all
+written in C. And the daemons comprising the *rest* of the Internet
+are mostly written in C too. In fact nearly all system-level code in
+the world and certainly all significant operating systems are written
+in C. That means any study of good daemon practice must review these packages,
+ergo, a careful implementor needs to read C [2]. This template
+represents the beginnings of such a study.
+
+You can write a fast, safe, portable daemon using Twisted, the Python
+framework, or Ruby on Rails or lots of other things. But it won't
+teach you how Unix works or this kind of network programming in
+general. Nor will it help you if you are writing for a tiny embedded
+platform, or if you want to graft in chunks of C pulled out of
+assorted existing code.
+
+One of the nicest things someone said to me about this was that it
+helped some people debug a Python daemon... because once they
+understood how this kind of network programming was supposed to be
+done it all became clear. That's why I wrote daevel, to learn these
+things for myself.
+
+
+--
+Dan Shearer
+dan@shearer.org
+
+
+
+[1] Probably
+
+[2] See ISBN 0-201-79940-5 and ISBN 0-321-16607-8 to learn how and why
+to read code.
